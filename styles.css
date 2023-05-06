@@ -148,6 +148,7 @@ header {
 main {
   display: grid;
   grid-template-rows: 100px 1fr;
+  scroll-behavior: auto;
 }
 main .add-container {
   display: flex;
@@ -198,6 +199,7 @@ main .library-container .library-card .buttons button {
   border-radius: 15px;
   border: 2px solid plum;
   height: 30px;
+  cursor: pointer;
 }
 footer {
   display: flex;
@@ -215,7 +217,7 @@ main .library-container .library-card .buttons button:hover {
   transition-duration: 500ms;
 }
 main .library-container .library-card .buttons .book-status {
-  background-color: greenyellow;
+  background-color: orange;
 }
 
 main .library-container .library-card .buttons .remove {

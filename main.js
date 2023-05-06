@@ -1,11 +1,23 @@
 const addBook = document.getElementById('addBook');
-const BookStatus = document.querySelectorAll('.book-status');
 const popup = document.getElementById('form-container');
 const formAuthor = document.getElementById('author');
-  const formTitle = document.getElementById('title');
-  const formPagesRead = document.getElementById('pages-read');
-  const formBookStatus = document.getElementById('status');
+const formTitle = document.getElementById('title');
+const formPagesRead = document.getElementById('pages-read');
+const formBookStatus = document.getElementById('status');
 const formSubmit = document.querySelector('.submit');
+const bookStatExample = document.querySelector('.book-status');
+const removeBookExample =document.querySelector('.remove');
+
+// bookStatExample.addEventListener('click',()=>{
+//   if(bookStatExample.textContent === 'READ' ){
+//     bookStatExample.style.background = 'orange';
+//     bookStatExample.innerHTML = 'UNREAD';
+//   }
+//   else{
+//     bookStatExample.style.background = 'greenyellow';
+//     bookStatExample.innerHTML = 'READ';
+//   } 
+// })
 
 const myLibrary = [];
 
@@ -28,19 +40,6 @@ addBook.addEventListener('click', () =>{
   popup.style.top = '50px';
 });
 
-// Change Book Status 
-BookStatus.forEach((bookStat) => {
-  bookStat.addEventListener('click', () =>{
-    if(bookStat.innerHTML === 'READ' ){
-      bookStat.style.background = 'orange';
-      bookStat.innerHTML = 'UNREAD';
-    }
-    else{
-      bookStat.style.background = 'greenyellow';
-      bookStat.innerHTML = 'READ';
-    } 
-})
-});
 
 function createLibraryCard(){
   const libraryContainer = document.querySelector('.library-container');
@@ -97,14 +96,18 @@ function createLibraryCard(){
   const buttonStatus = document.createElement('button');
   buttonStatus.className = 'book-status';
   // get value from book status checkbox
-  let buttonStatusValue;
+  // let buttonStatusValue;
   if(formBookStatus.checked === false){
-    buttonStatusValue = document.createTextNode('UNREAD');
+    buttonStatus.innerHTML ='UNREAD';
+    // buttonStatusValue = document.createTextNode('UNREAD');
+    buttonStatus.style.background = 'orange';
   }
   else{
-    buttonStatusValue = document.createTextNode('READ');
+    buttonStatus.innerHTML='READ';
+    // buttonStatusValue = document.createTextNode('READ');
+    buttonStatus.style.background = 'greenyellow';
   }
-  buttonStatus.appendChild(buttonStatusValue);
+  // buttonStatus.appendChild(buttonStatusValue);
   buttonsContainer.appendChild(buttonStatus);
 
   // remove button
@@ -114,6 +117,40 @@ function createLibraryCard(){
   buttonRemove.appendChild(buttonRemoveText);
   buttonsContainer.appendChild(buttonRemove);
 }
+
+// change book status by clicking on
+function changeBookStatus (){
+  const BookStatus = document.querySelectorAll('.book-status');
+  BookStatus.forEach((bookStat) => {
+    bookStat.addEventListener('click', () =>{
+      if(bookStat.innerHTML === 'READ' ){
+        bookStat.style.background = 'orange';
+        bookStat.innerHTML = 'UNREAD';
+      }
+      else{
+        bookStat.style.background = 'greenyellow';
+        bookStat.innerHTML = 'READ';
+      } 
+    })
+  });
+}
+
+// remove Book from Library
+function removeFromDOM(){
+  alert('hi');
+}
+
+function removeBookFromLibrary(){
+  const removeBook = document.querySelectorAll('.remove');
+  removeBook.forEach((removeBtn)=>{
+    removeBtn.addEventListener('click', ()=>{
+      removeFromDOM();
+    })
+  })
+}
+
+
+
 
 // Add Book into Library
 formSubmit.addEventListener('click', (event) =>{
@@ -125,6 +162,9 @@ formSubmit.addEventListener('click', (event) =>{
    event.preventDefault();
    popup.style.top = '-500px';
    createLibraryCard();
+   changeBookStatus();
+   removeBookFromLibrary(); 
+   // empty the values
    formAuthor.value = '';
   formTitle.value = '';
   formPagesRead.value = '';

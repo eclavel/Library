@@ -140,7 +140,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
+  font-size: 40px;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 900;
 }
@@ -156,7 +156,7 @@ main .add-container {
 }
 main .add-container button {
   height: 30px;
-  width: 100px;
+  width: 180px;
   background-color: greenyellow;
   border: 2px solid gainsboro;
   border-radius: 15px;

@@ -226,8 +226,10 @@ form {
   display: grid;
   grid-template-rows: 1fr 50px;
   position: fixed;
-  top: 10%;
-  left: 5%;
+  /* position fixed form center */
+  left: 50%;
+  margin-left: -175px;
+  top: -500px;
   height: 300px;
   width: 300px;
   padding: 20px;
@@ -235,19 +237,33 @@ form {
   font-weight: 700;
   font-size: 16px;
   background-color: rgb(227, 170, 243);
-  border: 2px solid black;
+  border: 3px solid plum;
+  border-radius: 15px;
+  transition: 650ms;
 }
 
 form .form-info {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  gap: 30px;
+  gap: 40px;
 }
 
 form .form-info input {
   border-radius: 10px;
   border: 1px solid gainsboro;
+}
+
+form .form-info .author-container input {
+  width: 190px;
+}
+
+form .form-info .title-container input {
+  width: 200px;
+}
+
+form .form-info .pagesRead-container input {
+  width: 50px;
 }
 
 form .submit-form {
@@ -261,9 +277,10 @@ form .submit-form .submit {
   width: 150px;
   border-radius: 15px;
   background-color: greenyellow;
+  border: 3px solid plum;
 }
 
 form .submit-form .submit:hover {
-  transform: scale(1.1);
-  transition-duration: 600ms;
+  transform: scale(1.05);
+  transition-duration: 1s;
 }

@@ -1,4 +1,5 @@
 const addBook = document.getElementById('addBook');
+const popup = document.getElementById('form-container');
 const myLibrary = [];
 
 function Book(author, title, pagesRead, completed) {
@@ -13,5 +14,5 @@ function addBookToLibrary() {
 }
 
 addBook.addEventListener('click', () =>{
-  alert('Add Book');
+  popup.style.top = '50px';
 });

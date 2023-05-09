@@ -43,14 +43,16 @@ addBook.addEventListener('click', () =>{
 // change book status by clicking on
 function changeBookStatus(index) {
   const bookStatus = document.querySelector(`.book-status.${index}`);
-  if (bookStatus.textContent === 'READ') {
-    bookStatus.textContent = 'UNREAD';
-    bookStatus.style.background = 'orange';
-    myLibrary[index].completed = false;
-  } else {
+  const book = myLibrary[index];
+
+  book.completed = !book.completed;
+
+  if (book.completed) {
     bookStatus.textContent = 'READ';
     bookStatus.style.background = 'greenyellow';
-    myLibrary[index].completed = true;
+  } else {
+    bookStatus.textContent = 'UNREAD';
+    bookStatus.style.background = 'orange';
   }
 }
 
@@ -118,7 +120,9 @@ function createLibraryCard(index){
     buttonStatus.innerHTML='READ';
     buttonStatus.style.background = 'greenyellow';
   }
-  buttonStatus.addEventListener('click', () => changeBookStatus(index));
+  buttonStatus.addEventListener('click', () => {
+    changeBookStatus(index);
+  });
   buttonsContainer.appendChild(buttonStatus);
 
   // remove button
@@ -158,7 +162,7 @@ formSubmit.addEventListener('click', (event) =>{
    event.preventDefault();
    popup.style.top = '-500px';
    createLibraryCard(libraryLength);
-   removeBookFromLibrary(); 
+   removeBookFromLibrary();
    // empty the values
    formAuthor.value = '';
   formTitle.value = '';

@@ -40,8 +40,22 @@ addBook.addEventListener('click', () =>{
   popup.style.top = '50px';
 });
 
+// change book status by clicking on
+function changeBookStatus(index) {
+  const bookStatus = document.querySelector(`.book-status.${index}`);
+  if (bookStatus.textContent === 'READ') {
+    bookStatus.textContent = 'UNREAD';
+    bookStatus.style.background = 'orange';
+    myLibrary[index].completed = false;
+  } else {
+    bookStatus.textContent = 'READ';
+    bookStatus.style.background = 'greenyellow';
+    myLibrary[index].completed = true;
+  }
+}
 
-function createLibraryCard(){
+
+function createLibraryCard(index){
   const libraryContainer = document.querySelector('.library-container');
 
   // create library card
@@ -94,20 +108,17 @@ function createLibraryCard(){
 
   // create button status and remove button and append
   const buttonStatus = document.createElement('button');
-  buttonStatus.className = 'book-status';
+  buttonStatus.className = `book-status ${index}`;
   // get value from book status checkbox
-  // let buttonStatusValue;
   if(formBookStatus.checked === false){
     buttonStatus.innerHTML ='UNREAD';
-    // buttonStatusValue = document.createTextNode('UNREAD');
     buttonStatus.style.background = 'orange';
   }
   else{
     buttonStatus.innerHTML='READ';
-    // buttonStatusValue = document.createTextNode('READ');
     buttonStatus.style.background = 'greenyellow';
   }
-  // buttonStatus.appendChild(buttonStatusValue);
+  buttonStatus.addEventListener('click', () => changeBookStatus(index));
   buttonsContainer.appendChild(buttonStatus);
 
   // remove button
@@ -118,22 +129,7 @@ function createLibraryCard(){
   buttonsContainer.appendChild(buttonRemove);
 }
 
-// change book status by clicking on
-function changeBookStatus (){
-  const BookStatus = document.querySelectorAll('.book-status');
-  BookStatus.forEach((bookStat) => {
-    bookStat.addEventListener('click', () =>{
-      if(bookStat.innerHTML === 'READ' ){
-        bookStat.style.background = 'orange';
-        bookStat.innerHTML = 'UNREAD';
-      }
-      else{
-        bookStat.style.background = 'greenyellow';
-        bookStat.innerHTML = 'READ';
-      } 
-    })
-  });
-}
+
 
 // remove Book from Library
 function removeFromDOM(){
@@ -161,8 +157,7 @@ formSubmit.addEventListener('click', (event) =>{
    addBookToLibrary(libraryLength);
    event.preventDefault();
    popup.style.top = '-500px';
-   createLibraryCard();
-   changeBookStatus();
+   createLibraryCard(libraryLength);
    removeBookFromLibrary(); 
    // empty the values
    formAuthor.value = '';

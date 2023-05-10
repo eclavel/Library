@@ -5,6 +5,7 @@ const formTitle = document.getElementById('title');
 const formPagesRead = document.getElementById('pages-read');
 const formBookStatus = document.getElementById('status');
 const formSubmit = document.querySelector('.submit');
+const formCancel = document.querySelector('.cancel');
 
 const myLibrary = [];
 
@@ -121,4 +122,8 @@ formSubmit.addEventListener('click', (event) =>{
   formPagesRead.value = '';
   formBookStatus.checked = false; 
   }
+})
+
+formCancel.addEventListener('click', () =>{
+  popup.style.top = '-500px';
 })

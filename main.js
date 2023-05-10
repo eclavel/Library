@@ -5,19 +5,6 @@ const formTitle = document.getElementById('title');
 const formPagesRead = document.getElementById('pages-read');
 const formBookStatus = document.getElementById('status');
 const formSubmit = document.querySelector('.submit');
-const bookStatExample = document.querySelector('.book-status');
-const removeBookExample =document.querySelector('.remove');
-
-// bookStatExample.addEventListener('click',()=>{
-//   if(bookStatExample.textContent === 'READ' ){
-//     bookStatExample.style.background = 'orange';
-//     bookStatExample.innerHTML = 'UNREAD';
-//   }
-//   else{
-//     bookStatExample.style.background = 'greenyellow';
-//     bookStatExample.innerHTML = 'READ';
-//   } 
-// })
 
 const myLibrary = [];
 
@@ -28,141 +15,106 @@ function Book(author, title, pagesRead, completed) {
   this.completed = completed;
 }
 
-function addBookToLibrary(len) {
-  // do stuff here
-  myLibrary[len] = new Book(formAuthor.value
-    , formTitle.value, formPagesRead.value
-    , formBookStatus.checked);
+function addBookToLibrary() {
+  const book = new Book(
+    formAuthor.value,
+    formTitle.value,
+    formPagesRead.value,
+    formBookStatus.checked
+  );
+
+  myLibrary.push(book);
+  createLibraryCard(book);
 }
 
 // Popup for the form when clicked
-addBook.addEventListener('click', () =>{
+addBook.addEventListener('click', () => {
   popup.style.top = '50px';
 });
 
-// change book status by clicking on
-function changeBookStatus(index) {
-  const bookStatus = document.querySelector(`.book-status.${index}`);
+// Toggle book status
+function toggleBookStatus(stringIndex) {
+  const index = parseInt(stringIndex, 10);
   const book = myLibrary[index];
-
   book.completed = !book.completed;
-
-  if (book.completed) {
-    bookStatus.textContent = 'READ';
-    bookStatus.style.background = 'greenyellow';
-  } else {
-    bookStatus.textContent = 'UNREAD';
-    bookStatus.style.background = 'orange';
-  }
+  const bookStatus = document.querySelector(`.book-status[data-index="${index}"]`);
+  bookStatus.textContent = book.completed ? 'READ' : 'UNREAD';
+  bookStatus.style.background = book.completed ? 'greenyellow' : 'orange';
 }
 
+// Remove book from library
+function removeBookFromLibrary(index) {
+  // delete item from array but don't update index
+  delete myLibrary[index];
+  const libraryCard = document.querySelector(`.library-card[data-index="${index}"]`);
+  libraryCard.parentNode.removeChild(libraryCard);
+}
 
-function createLibraryCard(index){
+// Create library card
+function createLibraryCard(book) {
   const libraryContainer = document.querySelector('.library-container');
 
-  // create library card
+  // Create library card
   const libraryCard = document.createElement('div');
   libraryCard.className = 'library-card';
+  libraryCard.setAttribute('data-index', myLibrary.indexOf(book));
   libraryContainer.appendChild(libraryCard);
 
-  // create div with class 'info' and append to library
+  // Create info container
   const infoContainer = document.createElement('div');
   infoContainer.className = 'info';
   libraryCard.appendChild(infoContainer);
 
-  // create 3 <p> element for infoContainer(Author, Title, Pages Read)
-  const p1 = document.createElement('p');
-  const p2 = document.createElement('p');
-  const p3 = document.createElement('p');
-  p1.className = 'author';
-  p2.className = 'title';
-  p3.className = 'pages-read';
-  infoContainer.appendChild(p1);
-  infoContainer.appendChild(p2);
-  infoContainer.appendChild(p3);
+  // Create author element
+  const authorElement = document.createElement('p');
+  authorElement.innerHTML = `<u>Author:</u> ${book.author}`;
+  infoContainer.appendChild(authorElement);
 
-  // create the underline Text for each <p>
-  const p1Element = document.createElement('u');
-  const p2Element = document.createElement('u');
-  const p3Element = document.createElement('u');
-  const u1 = document.createTextNode('Author: ')
-  const u2 = document.createTextNode('Title: ');
-  const u3 = document.createTextNode('Pages Read: ');
-  p1Element.appendChild(u1);
-  p1.appendChild(p1Element);
-  p2Element.appendChild(u2);
-  p2.appendChild(p2Element);
-  p3Element.appendChild(u3);
-  p3.appendChild(p3Element);
+  // Create title element
+  const titleElement = document.createElement('p');
+  titleElement.innerHTML = `<u>Title:</u> ${book.title}`;
+  infoContainer.appendChild(titleElement);
 
-  // insert data into <p> and append to child
-  const authorData = document.createTextNode(` ${formAuthor.value}`);
-  p1.appendChild(authorData);
-  const titleData = document.createTextNode(` ${formTitle.value}`);
-  p2.appendChild(titleData);
-  const pagesReadData = document.createTextNode(` ${formPagesRead.value}`);
-  p3.appendChild(pagesReadData);
+  // Create pages read element
+  const pagesReadElement = document.createElement('p');
+  pagesReadElement.innerHTML = `<u>Pages Read:</u> ${book.pagesRead}`;
+  infoContainer.appendChild(pagesReadElement);
 
-  // create buttons div 
+  // Create buttons container
   const buttonsContainer = document.createElement('div');
   buttonsContainer.className = 'buttons';
   libraryCard.appendChild(buttonsContainer);
 
-  // create button status and remove button and append
-  const buttonStatus = document.createElement('button');
-  buttonStatus.className = `book-status ${index}`;
-  // get value from book status checkbox
-  if(formBookStatus.checked === false){
-    buttonStatus.innerHTML ='UNREAD';
-    buttonStatus.style.background = 'orange';
-  }
-  else{
-    buttonStatus.innerHTML='READ';
-    buttonStatus.style.background = 'greenyellow';
-  }
-  buttonStatus.addEventListener('click', () => {
-    changeBookStatus(index);
+  // Create status button
+  const statusButton = document.createElement('button');
+  statusButton.className = 'book-status';
+  statusButton.setAttribute('data-index', myLibrary.indexOf(book));
+  statusButton.textContent = book.completed ? 'READ' : 'UNREAD';
+  statusButton.style.background = book.completed ? 'greenyellow' : 'orange';
+  statusButton.addEventListener('click', () => {
+    const index = statusButton.getAttribute('data-index');
+    toggleBookStatus(index);
   });
-  buttonsContainer.appendChild(buttonStatus);
+  buttonsContainer.appendChild(statusButton);
 
-  // remove button
-  const buttonRemove = document.createElement('button');
-  buttonRemove.className = 'remove';
-  const buttonRemoveText = document.createTextNode('REMOVE');
-  buttonRemove.appendChild(buttonRemoveText);
-  buttonsContainer.appendChild(buttonRemove);
+  // Create remove button
+  const removeButton = document.createElement('button');
+  removeButton.className = 'remove';
+  removeButton.textContent = 'REMOVE';
+  removeButton.addEventListener('click', () => {
+    removeBookFromLibrary(myLibrary.indexOf(book));
+  });
+  buttonsContainer.appendChild(removeButton);
 }
-
-
-
-// remove Book from Library
-function removeFromDOM(){
-  alert('hi');
-}
-
-function removeBookFromLibrary(){
-  const removeBook = document.querySelectorAll('.remove');
-  removeBook.forEach((removeBtn)=>{
-    removeBtn.addEventListener('click', ()=>{
-      removeFromDOM();
-    })
-  })
-}
-
-
-
 
 // Add Book into Library
 formSubmit.addEventListener('click', (event) =>{
   if(formAuthor.value !== '' && 
   formTitle.value !== '' && 
   formPagesRead.value !==''){
-    const libraryLength = myLibrary.length;
-   addBookToLibrary(libraryLength);
+   addBookToLibrary();
    event.preventDefault();
    popup.style.top = '-500px';
-   createLibraryCard(libraryLength);
-   removeBookFromLibrary();
    // empty the values
    formAuthor.value = '';
   formTitle.value = '';
